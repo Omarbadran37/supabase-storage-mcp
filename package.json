@@ -1,0 +1,41 @@
+{
+  "name": "supabase-storage-mcp",
+  "version": "1.0.0",
+  "description": "Supabase Storage MCP Server with enhanced security features and batch operations",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "prepare": "npm run build",
+    "security-check": "npm audit --audit-level moderate",
+    "test": "echo \"Add your tests here\" && exit 0"
+  },
+  "keywords": ["supabase", "storage", "mcp", "security", "batch-operations", "file-management"],
+  "author": "Open Source Contributors",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.6.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "dotenv": "^16.5.0",
+    "isomorphic-dompurify": "^2.8.0",
+    "jsonwebtoken": "^9.0.2",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/supabase-storage-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/supabase-storage-mcp/issues"
+  },
+  "homepage": "https://github.com/your-username/supabase-storage-mcp#readme"
+}

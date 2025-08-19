@@ -225,6 +225,225 @@ await mcp.call('download_file', {
 await mcp.call('get_security_status', {});
 ```
 
+## Tools
+
+This MCP server provides a suite of tools for managing Supabase Storage.
+
+### `create_bucket`
+
+Creates a new storage bucket.
+
+**Parameters:**
+
+*   `bucket_name` (string, required): The name of the bucket to create. Must be between 3 and 63 characters, and can only contain lowercase letters, numbers, and hyphens.
+*   `is_public` (boolean, optional): Whether the bucket should be public. Defaults to `false`.
+
+**Example:**
+
+```javascript
+await mcp.call('create_bucket', {
+  bucket_name: 'my-new-bucket',
+  is_public: true
+});
+```
+
+### `setup_buckets`
+
+Initializes a standard set of buckets for a user.
+
+**Parameters:**
+
+*   `base_bucket_name` (string, optional): A prefix for the bucket names. Defaults to `'storage'`.
+*   `user_id` (string, optional): A user ID to associate with the buckets.
+
+**Example:**
+
+```javascript
+await mcp.call('setup_buckets', {
+  base_bucket_name: 'user-files',
+  user_id: 'user-123'
+});
+```
+
+### `upload_image_batch`
+
+Uploads a batch of images to a specified bucket.
+
+**Parameters:**
+
+*   `bucket_name` (string, required): The name of the bucket to upload to.
+*   `batch_id` (string, required): A unique ID for the batch.
+*   `folder_prefix` (string, required): A folder prefix for the uploaded files.
+*   `user_id` (string, required): A user ID to associate with the files.
+*   `image_paths` (array of strings, optional): An array of local file paths to upload.
+*   `image_data` (array of objects, optional): An array of image data objects, each with `filename`, `content`, and `mime_type` properties.
+
+**Example:**
+
+```javascript
+await mcp.call('upload_image_batch', {
+  bucket_name: 'user-files-images',
+  batch_id: 'batch-456',
+  folder_prefix: 'raw',
+  user_id: 'user-123',
+  image_paths: ['/path/to/image1.jpg', '/path/to/image2.png']
+});
+```
+
+### `list_files`
+
+Lists files in a bucket.
+
+**Parameters:**
+
+*   `bucket_name` (string, required): The name of the bucket to list files from.
+*   `folder_path` (string, optional): The path to a specific folder within the bucket.
+*   `file_extension` (string, optional): A file extension to filter by.
+
+**Example:**
+
+```javascript
+await mcp.call('list_files', {
+  bucket_name: 'user-files-images',
+  folder_path: 'raw/user-123/batch-456',
+  file_extension: '.jpg'
+});
+```
+
+### `get_file_url`
+
+Generates a signed URL for a file.
+
+**Parameters:**
+
+*   `bucket_name` (string, required): The name of the bucket the file is in.
+*   `storage_path` (string, required): The full path to the file in the bucket.
+*   `expires_in` (number, optional): The number of seconds until the URL expires. Defaults to `7200`.
+
+**Example:**
+
+```javascript
+await mcp.call('get_file_url', {
+  bucket_name: 'user-files-images',
+  storage_path: 'raw/user-123/batch-456/image1.jpg',
+  expires_in: 3600
+});
+```
+
+### `create_signed_urls`
+
+Generates signed URLs for multiple files.
+
+**Parameters:**
+
+*   `bucket_name` (string, required): The name of the bucket the files are in.
+*   `file_paths` (array of strings, required): An array of file paths to generate URLs for.
+*   `expires_in` (number, optional): The number of seconds until the URLs expire. Defaults to `3600`.
+
+**Example:**
+
+```javascript
+await mcp.call('create_signed_urls', {
+  bucket_name: 'user-files-images',
+  file_paths: [
+    'raw/user-123/batch-456/image1.jpg',
+    'raw/user-123/batch-456/image2.png'
+  ],
+  expires_in: 1800
+});
+```
+
+### `download_file`
+
+Downloads a file from a bucket.
+
+**Parameters:**
+
+*   `bucket_name` (string, required): The name of the bucket the file is in.
+*   `file_path` (string, required): The full path to the file in the bucket.
+*   `return_format` (string, optional): The format to return the file in. Can be `'base64'` or `'binary'`. Defaults to `'base64'`.
+*   `transform_options` (object, optional): An object with `width`, `height`, and `quality` properties for image transformations.
+
+**Example:**
+
+```javascript
+await mcp.call('download_file', {
+  bucket_name: 'user-files-images',
+  file_path: 'raw/user-123/batch-456/image1.jpg',
+  return_format: 'base64',
+  transform_options: {
+    width: 100,
+    height: 100,
+    quality: 90
+  }
+});
+```
+
+### `download_file_with_auto_trigger`
+
+Downloads a file and provides JavaScript code to trigger an automatic download in the browser.
+
+**Parameters:**
+
+*   `bucket_name` (string, required): The name of the bucket the file is in.
+*   `file_path` (string, required): The full path to the file in the bucket.
+*   `return_format` (string, optional): The format to return the file in. Can be `'base64'`, `'binary'`, or `'signed_url'`. Defaults to `'base64'`.
+*   `auto_download` (boolean, optional): Whether to generate the auto-download trigger. Defaults to `false`.
+*   `custom_filename` (string, optional): A custom filename for the download.
+
+**Example:**
+
+```javascript
+await mcp.call('download_file_with_auto_trigger', {
+  bucket_name: 'user-files-images',
+  file_path: 'raw/user-123/batch-456/image1.jpg',
+  return_format: 'signed_url',
+  auto_download: true,
+  custom_filename: 'my-cool-image.jpg'
+});
+```
+
+### `batch_download`
+
+Downloads multiple files from a bucket.
+
+**Parameters:**
+
+*   `bucket_name` (string, required): The name of the bucket the files are in.
+*   `file_paths` (array of strings, required): An array of file paths to download.
+*   `return_format` (string, optional): The format to return the files in. Can be `'base64'`, `'binary'`, or `'signed_url'`. Defaults to `'signed_url'`.
+*   `auto_download` (boolean, optional): Whether to generate the auto-download trigger for the batch. Defaults to `false`.
+*   `download_delay` (number, optional): The delay in milliseconds between each download when `auto_download` is `true`. Defaults to `500`.
+
+**Example:**
+
+```javascript
+await mcp.call('batch_download', {
+  bucket_name: 'user-files-images',
+  file_paths: [
+    'raw/user-123/batch-456/image1.jpg',
+    'raw/user-123/batch-456/image2.png'
+  ],
+  return_format: 'signed_url',
+  auto_download: true,
+  download_delay: 1000
+});
+```
+
+### `get_security_status`
+
+Gets the current security status of the server.
+
+**Parameters:**
+
+None.
+
+**Example:**
+
+```javascript
+await mcp.call('get_security_status', {});
+```
+
 ## API Reference
 
 ### Tools

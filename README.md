@@ -46,7 +46,7 @@ A secure, production-ready Model Context Protocol (MCP) server for Supabase Stor
 
 1. **Clone and install dependencies:**
 ```bash
-git clone https://github.com/your-username/supabase-storage-mcp.git
+git clone https://github.com/Omarbadran37/supabase-storage-mcp.git
 cd supabase-storage-mcp
 npm install
 ```
@@ -309,6 +309,15 @@ npm run dev
 npm run security-check
 ```
 
+## Tests
+
+This project currently lacks a comprehensive test suite. We welcome contributions in this area! You can add tests using your favorite testing framework (e.g., Jest, Vitest).
+
+To run the placeholder test script:
+```bash
+npm test
+```
+
 ## Contributing
 
 1. Fork the repository
@@ -323,9 +332,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/your-username/supabase-storage-mcp/issues)
+- **Issues**: [GitHub Issues](https://github.com/Omarbadran37/supabase-storage-mcp/issues)
 - **Documentation**: This README and inline code comments
-- **Community**: [Discussions](https://github.com/your-username/supabase-storage-mcp/discussions)
+- **Community**: [Discussions](https://github.com/Omarbadran37/supabase-storage-mcp/discussions)
 
 ---
 

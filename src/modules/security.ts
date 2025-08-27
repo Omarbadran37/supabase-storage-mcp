@@ -102,7 +102,7 @@ export function detectPromptInjection(input: string): PromptInjectionResult {
     { name: 'developer_mode', regex: /developer\s+mode|debug\s+mode/i, weight: 15 },
     
     // Role manipulation
-    { name: 'role_change', regex: /(you\s+are|act\s+as|pretend\s+to\s+be)\s+(?:a\s+)?(hacker|admin|root|god)/i, weight: 20 },
+    { name: 'role_change', regex: /(you\s+are|act\s+as|pretend\s+to\s+be).*(hacker|admin|root|god)/i, weight: 20 },
     { name: 'jailbreak', regex: /jailbreak|break\s+free|escape\s+your/i, weight: 25 },
     
     // Prompt injection keywords
@@ -155,7 +155,7 @@ export function detectPromptInjection(input: string): PromptInjectionResult {
   }
 
   const confidence = Math.min(detectionScore / 100, 1.0);
-  const detected = confidence > 0.3;
+  const detected = confidence >= 0.2;
 
   if (detected) {
     securityMetrics.promptInjectionsDetected++;
